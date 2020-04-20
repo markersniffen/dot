@@ -12,8 +12,8 @@ let innerWidth = width - padLeft - padRight;
 let innerHeight = height - padTop - padBottom;
 
 let score = 0;
-const resetTime = 3;
-let time = 3;
+const resetTime = 30;
+let time = 30;
 let status = 'ready';
 
 const t8 = d3.transition()
