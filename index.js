@@ -12,8 +12,8 @@ let innerWidth = width - padLeft - padRight;
 let innerHeight = height - padTop - padBottom;
 
 let score = 0;
-const resetTime = 30;
-let time = 30;
+const resetTime = 3;
+let time = 3;
 let status = 'ready';
 
 const t8 = d3.transition()
@@ -41,16 +41,61 @@ function render() {
       .attr('viewbox', `0 0 ${width} ${height}`)
    )
 
-  message = svg.selectAll('.message').data([null])
-    .join('text')
-    .text("Press the button to begin!")
-    .attr('class', 'message')
+   message2 = svg.selectAll('.message2').data([null])
+   .join( enter => enter
+    .append('text')
+   .text("Welcome to Dot!")
+   .attr('class', 'message2')
+   .style('fill', 'steelBlue')
+   .style('font-size', '2em')
+   .style('font-weight', 'bold')
+   .style('fill-opacity', 0)
+   .attr('x', width/2)
+   .attr('y', innerHeight * .5 + 40)
+   .call(enter => enter
+   
+   .transition(t8)
+   .attr('x', width/2)
+   .attr('y', innerHeight * .5)
+   .style('fill-opacity', 1)
+   ),
+   update => update
+    .text('Again...?')
+    .style('fill-opacity', 0)
     .attr('x', width/2)
-    .attr('y', innerHeight * .85)
-    .style('fill', 'steelBlue')
+    .attr('y', innerHeight * .5 + 40)
+    .call(update => update
+    .transition(t8)
+    .attr('x', width/2)
+    .attr('y', innerHeight * .5)
+    .style('fill-opacity', 1)
+    .style('fill', 'steelblue')
+    )
+   )
+   
+
+  //  if (status === 'ready') {
+  //    message2.text("DOT")
+  //  } else {
+  //    message2.text('');
+  //  }
+
+  message = svg.selectAll('.message').data([null])
+  .join('text')
+  .text('try and press the dot...')
+  .attr('class', 'message')
+  .style('fill', 'steelBlue')
+  .style('fill-opacity', 0)
+  .attr('x', width/2)
+  .attr('y', innerHeight * .85 - 40)
+  .transition(t8)
+  .attr('x', width/2)
+  .attr('y', innerHeight * .85)
+  .style('fill-opacity', 1)
+  
 
     if (status === 'ready') {
-      message.text("Press the button to begin!")
+      message.text("Try and press the dot...")
     } else {
       message.text('');
     }
@@ -96,7 +141,7 @@ function render() {
     svg.selectAll('.myTime').data([time])
       .join('text')
       .attr('class', 'myTime')
-      .text(time)
+      .text(`Time: ${time}`)
       .style('fill', 'white')
       .attr('x', padLeft)
       .attr('y', padTop -20)
@@ -106,10 +151,28 @@ function render() {
 function clickMe(iw, ih) {
   if (status === 'gameover') {
     status = 'ready'
+    svg.selectAll('circle')
+    .transition().duration(150)
+    .attr('r', 50)
+    .style('fill', 'steelblue')
+    .transition().duration(350)
+    .attr('r', innerHeight*.05)
+    .style('fill', 'grey')
+
+    d3.selectAll('.message2')
+    .transition().duration(250)
+    .attr('y', innerHeight * .5 - 40)
+    .style('fill-opacity', 0) 
+
+
+
+    
     setTimeout(render, 500);
   } else {
   svg.selectAll('.message').text('')
+  svg.selectAll('.message2').text('')
   d3.selectAll('.circle')
+    .transition().duration(50)
     .attr('cx', Math.random()*innerWidth)
     .attr('cy', Math.random()*innerHeight)
     .style('fill', 'steelblue')
@@ -136,16 +199,24 @@ if (status === 'ready') {
   .text(`Time: ${time.toFixed(2)}`);
   if (time <= 0 ) {
     d3.selectAll('.myTime')
-    .text(`GAME OVER`);
+    .text(`Time: 0`);
 
     d3.selectAll('.score')
     .text(`Final score: ${score}`);
+
+    d3.selectAll('.message2')
+    .attr('y', innerHeight * .5 + 40)
+    .transition(t8)
+    .attr('y', innerHeight * .5)
+    .style('fill', '#e63737') 
+
+    .text(`GAME OVER`);
 
     d3.selectAll('.circle')
     .transition(t8)
     .attr('cx', innerWidth/2)
     .attr('cy', innerHeight/2)
-    .style('fill', 'red')
+    .style('fill', '#e63737') 
 
     status = 'gameover'
   }
