@@ -28,6 +28,11 @@ body {
 
 .message {
   text-anchor: middle;
+  alignment-baseline: central;
+}
+
+.message2 {
+  alignment-baseline: central;
 }
 
 #box {

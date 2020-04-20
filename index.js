@@ -15,9 +15,13 @@ let score = 0;
 const resetTime = 30;
 let time = 30;
 let status = 'ready';
+rad = innerHeight * .05;
 
 const t8 = d3.transition()
   .duration(800)
+
+  const t1 = d3.transition()
+  .duration(100)
 
 timeScale = d3.scaleLinear().domain([0, 30]).range([30, 0])
 
@@ -51,34 +55,28 @@ function render() {
    .style('font-weight', 'bold')
    .style('fill-opacity', 0)
    .attr('x', width/2)
-   .attr('y', innerHeight * .5 + 40)
+   .attr('y', innerHeight * .5 + padTop)
    .call(enter => enter
    
    .transition(t8)
    .attr('x', width/2)
-   .attr('y', innerHeight * .5)
+   .attr('y', innerHeight * .5 + padTop - 70)
    .style('fill-opacity', 1)
    ),
    update => update
     .text('Again...?')
     .style('fill-opacity', 0)
     .attr('x', width/2)
-    .attr('y', innerHeight * .5 + 40)
+    .attr('y', height * .5)
     .call(update => update
     .transition(t8)
     .attr('x', width/2)
-    .attr('y', innerHeight * .5)
+    .attr('y', height * .5 - 60)
     .style('fill-opacity', 1)
     .style('fill', 'steelblue')
     )
    )
    
-
-  //  if (status === 'ready') {
-  //    message2.text("DOT")
-  //  } else {
-  //    message2.text('');
-  //  }
 
   message = svg.selectAll('.message').data([null])
   .join('text')
@@ -87,10 +85,10 @@ function render() {
   .style('fill', 'steelBlue')
   .style('fill-opacity', 0)
   .attr('x', width/2)
-  .attr('y', innerHeight * .85 - 40)
+  .attr('y', innerHeight * .5 + padTop)
   .transition(t8)
   .attr('x', width/2)
-  .attr('y', innerHeight * .85)
+  .attr('y', innerHeight * .5 + padTop + 70)
   .style('fill-opacity', 1)
   
 
@@ -119,7 +117,7 @@ function render() {
         .call(
           enter => enter
           .transition(t8)
-          .attr('r', innerHeight*.05)
+          .attr('r', rad)
           .style('fill-opacity', 1)
           .style('fill', 'grey')
           )
@@ -129,6 +127,8 @@ function render() {
           .attr('cy', innerHeight/2)
           .style('fill', 'steelblue')
         )
+
+    
     
     svg.selectAll('.score').data([score])
       .join('text')
@@ -160,8 +160,8 @@ function clickMe(iw, ih) {
     .style('fill', 'grey')
 
     d3.selectAll('.message2')
-    .transition().duration(250)
-    .attr('y', innerHeight * .5 - 40)
+    .transition().duration(500)
+    .attr('y', innerHeight * .5 + padTop)
     .style('fill-opacity', 0) 
 
 
@@ -205,11 +205,10 @@ if (status === 'ready') {
     .text(`Final score: ${score}`);
 
     d3.selectAll('.message2')
-    .attr('y', innerHeight * .5 + 40)
+    .attr('y', innerHeight * .5 + padTop - 90)
     .transition(t8)
-    .attr('y', innerHeight * .5)
+    .attr('y', innerHeight * .5 + padTop - 70)
     .style('fill', '#e63737') 
-
     .text(`GAME OVER`);
 
     d3.selectAll('.circle')
@@ -223,6 +222,7 @@ if (status === 'ready') {
 }   
 
 }
+
 
 render();
 
