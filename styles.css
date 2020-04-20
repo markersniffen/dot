@@ -14,7 +14,7 @@ body {
   font-family: sans-serif;
   text-align: center;
   text-anchor: middle;
-  font-size: 2em;
+  font-size: 1.5em;
 
 }
 
@@ -26,14 +26,19 @@ body {
   text-anchor: start;
 }
 
+.message {
+  text-anchor: middle;
+}
+
 #box {
   margin: 0 auto;
   max-width: 800px;
   height: 100%;
   max-height: 800px;
   position: relative;
-  border-style: dashed;
-  border-color: red;
+  border-style: solid;
+  border-width: 1px;
+  border-color: steelblue;
 }
 
 

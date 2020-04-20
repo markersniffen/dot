@@ -7,7 +7,7 @@ let width = container._groups[0][0].offsetWidth;
 const padLeft = 35;
 const padRight = 35;
 const padBottom = 35;
-const padTop = 35;
+const padTop = 65;
 let innerWidth = width - padLeft - padRight;
 let innerHeight = height - padTop - padBottom;
 
@@ -41,7 +41,19 @@ function render() {
       .attr('viewbox', `0 0 ${width} ${height}`)
    )
 
-      
+  message = svg.selectAll('.message').data([null])
+    .join('text')
+    .text("Press the button to begin!")
+    .attr('class', 'message')
+    .attr('x', width/2)
+    .attr('y', innerHeight * .85)
+    .style('fill', 'steelBlue')
+
+    if (status === 'ready') {
+      message.text("Press the button to begin!")
+    } else {
+      message.text('');
+    }
       
     // setup padded group
     let pad = svg.selectAll('#pad').data([null])
@@ -62,7 +74,7 @@ function render() {
         .call(
           enter => enter
           .transition(t8)
-          .attr('r', innerHeight*.1)
+          .attr('r', innerHeight*.05)
           .style('fill-opacity', 1)
           .style('fill', 'grey')
           )
@@ -73,21 +85,21 @@ function render() {
           .style('fill', 'steelblue')
         )
     
-    pad.selectAll('.score').data([score])
+    svg.selectAll('.score').data([score])
       .join('text')
       .attr('class', 'score')
       .text(`Score: ${score}`)
       .style('fill', 'white')
-      .attr('x', innerWidth)
-      .attr('y', 12)
+      .attr('x', width - padRight)
+      .attr('y', padTop - 20)
 
-    pad.selectAll('.myTime').data([time])
+    svg.selectAll('.myTime').data([time])
       .join('text')
       .attr('class', 'myTime')
       .text(time)
       .style('fill', 'white')
-      .attr('x', 0)
-      .attr('y', 12)
+      .attr('x', padLeft)
+      .attr('y', padTop -20)
 
 }
 
@@ -96,7 +108,7 @@ function clickMe(iw, ih) {
     status = 'ready'
     setTimeout(render, 500);
   } else {
- 
+  svg.selectAll('.message').text('')
   d3.selectAll('.circle')
     .attr('cx', Math.random()*innerWidth)
     .attr('cy', Math.random()*innerHeight)
@@ -104,7 +116,7 @@ function clickMe(iw, ih) {
   
   score += 1;
   d3.selectAll('.score')
-    .text(score)
+    .text(`Score: ${score}`)
 
   status = 'playing';
   }
@@ -125,6 +137,9 @@ if (status === 'ready') {
   if (time <= 0 ) {
     d3.selectAll('.myTime')
     .text(`GAME OVER`);
+
+    d3.selectAll('.score')
+    .text(`Final score: ${score}`);
 
     d3.selectAll('.circle')
     .transition(t8)
