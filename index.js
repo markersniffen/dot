@@ -148,7 +148,7 @@ function render() {
 
 }
 
-function clickMe(iw, ih) {
+function clickMe() {
   if (status === 'gameover') {
     status = 'ready'
     svg.selectAll('circle')
@@ -192,6 +192,7 @@ function timer() {
 
 if (status === 'ready') {
   time = resetTime;
+  score = 0;
 } else if (status === 'playing' ){
       
   time -= .01;
